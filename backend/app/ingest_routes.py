@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, model_validator
@@ -18,8 +19,8 @@ _ID_PATTERN = re.compile(r"^[A-Za-z0-9~_-]+$")
 
 
 class ApifyIngestRequest(BaseModel):
-    dataset_id: str | None = None
-    run_id: str | None = None
+    dataset_id: Optional[str] = None
+    run_id: Optional[str] = None
     max_items: int = Field(default=1000, ge=1, le=5000)
 
     @model_validator(mode="after")
