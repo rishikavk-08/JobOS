@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import requests
 from dotenv import load_dotenv
@@ -29,7 +30,7 @@ def _headers() -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-def _get(path: str, params: dict | None = None) -> requests.Response:
+def _get(path: str, params: Optional[dict] = None) -> requests.Response:
     try:
         response = requests.get(
             f"{APIFY_BASE_URL}{path}",
