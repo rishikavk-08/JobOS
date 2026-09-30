@@ -1,5 +1,6 @@
 import html
 import re
+from typing import Optional
 from urllib.parse import urlsplit, urlunsplit
 
 import psycopg
@@ -18,7 +19,7 @@ PLAIN_DESC_KEYS = ["descriptionText", "description", "jobDescription"]
 HTML_DESC_KEYS = ["descriptionHtml"]
 
 
-def _first(record: dict, keys: list[str]) -> str | None:
+def _first(record: dict, keys: list[str]) -> Optional[str]:
     for key in keys:
         value = record.get(key)
         if isinstance(value, dict):
@@ -37,7 +38,7 @@ def _html_to_text(value: str) -> str:
     return value.strip()
 
 
-def normalize_url(raw: str) -> str | None:
+def normalize_url(raw: str) -> Optional[str]:
     parts = urlsplit(raw.strip())
     if parts.scheme not in ("http", "https") or not parts.netloc:
         return None
@@ -48,7 +49,7 @@ def normalize_url(raw: str) -> str | None:
     return urlunsplit((parts.scheme, host, path, query, ""))
 
 
-def map_item(item) -> tuple[dict | None, str | None]:
+def map_item(item) -> tuple[Optional[dict], Optional[str]]:
     """Map one Apify record to a JobOS job. Returns (job, error)."""
     if not isinstance(item, dict):
         return None, "record is not a JSON object"
