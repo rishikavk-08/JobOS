@@ -1,5 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from .ingest_routes import router as ingest_router   # add with the other imports at the top
+
+app.include_router(ingest_router)                      # add right after app.add_middleware(...)
 
 from .database import get_connection
 from .ai_analyzer import analyze_job
